@@ -1,0 +1,20 @@
+{
+  "name": "cryptoprice-dash",
+  "description": "It show current cryptoprice price for Bitcoin and Etherem.",
+  "main": "",
+  "authors": [
+    "Abhijit Kumar"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0"
+  }
+}
