@@ -5,6 +5,14 @@
     <template>
         <h1>Hello World</h1>
         <iron-ajax id="coinbase" handle-as="json" on-response="_handleResponse"></iron-ajax>
+        <template is="dom-repeat" items="[[currencies]]">
+            <p>[[index]] [[item]] [[item.code]]-[[item.name]]-[[item.price]]</p>
+        </template>
+        <!-- 
+        <p>[[currencies.0.code]] - [[currencies.0.name]] - [[currencies.0.price]]</p>
+        <p>[[currencies.1.code]] - [[currencies.1.name]] - [[currencies.1.price]]</p>
+        <p>[[currencies.2.code]] - [[currencies.2.name]] - [[currencies.2.price]]</p>
+        -->
     </template> 
     <script>
         class CryptopriceDash extends Polymer.Element {
@@ -17,15 +25,18 @@
                         value: [
                             {
                                 code: 'BTC',
-                                name: 'Bitcoin'
+                                name: 'Bitcoin',
+                                price: 0
                             },
                             {
                                 code: 'ETH',
-                                name: 'Ethereum'
+                                name: 'Ethereum',
+                                price: 0
                             },
                             {
                                 code: 'LTC',
-                                name: 'LiteCoin'
+                                name: 'LiteCoin',
+                                price: 0
                             }
                         ] 
                     }
@@ -44,11 +55,27 @@
                 var currencies = this.currencies;
                 currencies.forEach(function(element, key) {
                     ajax.url = 'https://api.coinbase.com/v2/prices/' + element.code + '-USD/spot';
+                    // Creating ajax Request for each currency
                     ajax.generateRequest();
                 }, this);
             }
+
             _handleResponse(response) {
-                console.log(response);
+                this._computeCurrencyPrice(response.detail);
+            }
+
+            _computeCurrencyPrice(data) {
+                //detail.url is https://api.coinbase.com/v2/prices/ETH-USD/spot
+                //Store which crypto currency price is showing
+                var code = data.url.substring(35,38);
+                //console.log('Response:' + JSON.stringify(data.response));
+
+                //find the index of code in the Array, BTC=0, ETH=1, LTC=2
+                var index = this.currencies.map(function (e) { return e.code; }).indexOf(code);
+
+                //making changes observable to polymer
+                this.set('currencies.' + index + '.price', data.response.data.amount);
+                //Above is equal to currencies.0.price, it will set the price in currencies array
             }
 
         }
