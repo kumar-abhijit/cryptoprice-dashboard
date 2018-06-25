@@ -6,7 +6,7 @@
         <h1>Hello World</h1>
         <iron-ajax id="coinbase" handle-as="json" on-response="_handleResponse"></iron-ajax>
         <template is="dom-repeat" items="[[currencies]]">
-            <p>[[index]] [[item]] [[item.code]]-[[item.name]]-[[item.price]]</p>
+            <p>[[index]] [[item]] [[item.code]]-[[item.name]]-$[[item.price]]</p>
         </template>
         <!-- 
         <p>[[currencies.0.code]] - [[currencies.0.name]] - [[currencies.0.price]]</p>
